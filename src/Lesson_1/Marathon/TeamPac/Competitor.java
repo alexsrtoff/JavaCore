@@ -1,4 +1,4 @@
-package Lesson_1.Marathon;
+package Lesson_1.Marathon.TeamPac;
 
 public interface Competitor {
     void run(int dist);
@@ -6,4 +6,6 @@ public interface Competitor {
     void jump(int height);
     boolean isOnDistance();
     void info();
+    void fullInfo();
+
 }

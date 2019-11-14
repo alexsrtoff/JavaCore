@@ -1,4 +1,4 @@
-package Lesson_1.Marathon;
+package Lesson_1.Marathon.TeamPac;
 
 public class Human implements Competitor {
     String name;
@@ -14,11 +14,11 @@ public class Human implements Competitor {
         return active;
     }
 
-    public Human(String name) {
+    public Human(String name, int maxRunDistance, int maxSwimDistance, int maxJumpHeight) {
         this.name = name;
-        this.maxRunDistance = 5000;
-        this.maxJumpHeight = 30;
-        this.maxSwimDistance = 200;
+        this.maxRunDistance = maxRunDistance;
+        this.maxJumpHeight = maxJumpHeight;
+        this.maxSwimDistance = maxSwimDistance;
         this.active = true;
     }
 
@@ -55,5 +55,10 @@ public class Human implements Competitor {
     @Override
     public void info() {
         System.out.println(name + " - " + active);
+    }
+    @Override
+    public void fullInfo() {
+        System.out.println("имя " + name + " может пробежать " + maxRunDistance +
+                " может проплыть " + maxSwimDistance + " может подпрыгнуть " + maxJumpHeight);
     }
 }

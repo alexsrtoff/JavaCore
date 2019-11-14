@@ -1,4 +1,4 @@
-package Lesson_1.Marathon;
+package Lesson_1.Marathon.TeamPac;
 
 public class Animal implements Competitor {
     String type;
@@ -62,5 +62,11 @@ public class Animal implements Competitor {
     @Override
     public void info() {
         System.out.println(type + " " + name + " - " + onDistance);
+    }
+
+    @Override
+    public void fullInfo() {
+        System.out.println(type + ", имя " + name + " может пробежать " + maxRunDistance +
+                " может проплыть " + maxSwimDistance + " может подпрыгнуть " + maxJumpHeight);
     }
 }
