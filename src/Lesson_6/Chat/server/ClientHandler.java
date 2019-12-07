@@ -10,6 +10,7 @@ public class ClientHandler {
     DataInputStream in;
     DataOutputStream out;
     MainServ serv;
+    String nick;
 
     public ClientHandler(MainServ serv, Socket socket){
         try {
@@ -22,15 +23,30 @@ public class ClientHandler {
                 @Override
                 public void run() {
                     try {
+
+                        while (true) {
+                            String msg = in.readUTF();
+                            if (msg.startsWith("/auth")) {
+                                String[] tockens = msg.split(" ");
+                                String newNick = AuthService.getNickByLoginAndPass(tockens[1], tockens[2]);
+                                if(newNick != null){
+                                    sendMsg("/authok");
+                                    nick = newNick;
+                                    serv.subscribe(ClientHandler.this);
+                                    break;
+                                }else{
+                                    sendMsg("Неверный логин/пароль");
+                                }
+                            }
+                        }
+
                         while (true) {
                             String msg = in.readUTF();
                             if (msg.equals("/end")) {
                                 out.writeUTF("/serverClosed");
-                                serv.removeClient(ClientHandler.this);
-                                socket.close();
                                 break;
                             }
-                            serv.broadcastMsg(msg);
+                            serv.broadcastMsg(nick + ": " + msg);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -49,7 +65,7 @@ public class ClientHandler {
                             socket.close();
                         } catch (IOException e) {
                             e.printStackTrace();
-                        }
+                        }serv.unsubscribe(ClientHandler.this);
                     }
                 }
             }).start();
