@@ -64,28 +64,20 @@ public class MainServ {
     }
 
     public boolean checkPrivateMsg(String msg) {
-        boolean check = false;
-
-        for (ClientHandler c: clients){
-            if(msg.startsWith("/" + c.nick)){
-                check = true;
-                break;
-            }
-        }
-        return  check;
+        return msg.startsWith("/w");
     }
 
     public void sendPrivateMsg(String nick, String msg) {
         String[] tockens = msg.split(" ");
         for (ClientHandler o: clients){
-            if (msg.startsWith("/" + o.nick)) {
-                o.sendMsg(nick + " :" + tockens[1]);
+            if (tockens[1].equals(o.nick)) {
+                o.sendMsg(nick + " :" + tockens[2]);
                 break;
             }
         }
         for (ClientHandler o: clients){
             if(o.nick.equals(nick)){
-                o.sendMsg(nick + " :" + tockens[1]);
+                o.sendMsg(nick + " :" + tockens[2]);
                 break;
             }
         }
