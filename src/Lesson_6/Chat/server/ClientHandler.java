@@ -29,7 +29,10 @@ public class ClientHandler {
                             if (msg.startsWith("/auth")) {
                                 String[] tockens = msg.split(" ");
                                 String newNick = AuthService.getNickByLoginAndPass(tockens[1], tockens[2]);
-                                if(newNick != null){
+                                if(serv.checkNick(newNick)){
+                                    sendMsg("Логин/ник занят. Введите другой логин");
+                                }
+                                else if(newNick != null){
                                     sendMsg("/authok");
                                     nick = newNick;
                                     serv.subscribe(ClientHandler.this);
@@ -46,7 +49,11 @@ public class ClientHandler {
                                 out.writeUTF("/serverClosed");
                                 break;
                             }
-                            serv.broadcastMsg(nick + ": " + msg);
+                            if(serv.checkPrivateMsg(msg)){
+                                serv.sendPrivateMsg(nick, msg);
+                            }else serv.broadcastMsg(nick + ": " + msg);
+
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();

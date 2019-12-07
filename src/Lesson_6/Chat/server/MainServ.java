@@ -54,4 +54,40 @@ public class MainServ {
             o.sendMsg(msg);
         }
     }
+
+    public boolean checkNick(String newNick) {
+        boolean check = false;
+        for(ClientHandler e: clients){
+            if(e.nick.equals(newNick)) check = true;
+        }
+        return check;
+    }
+
+    public boolean checkPrivateMsg(String msg) {
+        boolean check = false;
+
+        for (ClientHandler c: clients){
+            if(msg.startsWith("/" + c.nick)){
+                check = true;
+                break;
+            }
+        }
+        return  check;
+    }
+
+    public void sendPrivateMsg(String nick, String msg) {
+        String[] tockens = msg.split(" ");
+        for (ClientHandler o: clients){
+            if (msg.startsWith("/" + o.nick)) {
+                o.sendMsg(nick + " :" + tockens[1]);
+                break;
+            }
+        }
+        for (ClientHandler o: clients){
+            if(o.nick.equals(nick)){
+                o.sendMsg(nick + " :" + tockens[1]);
+                break;
+            }
+        }
+    }
 }
